@@ -1,85 +1,218 @@
-# EmployeeAssist AI
+# 🤖 EmployeeAssist AI
 
-EmployeeAssist AI is an intelligent HR support application built as an AI engineering portfolio project.
+**Intelligent HR Support Agent — AI Engineer Portfolio Project**
 
-## Overview
+EmployeeAssist AI is an AI-powered HR support application designed to answer employee policy questions and automate routine HR requests.
 
-The application helps employees:
+The project demonstrates practical AI engineering concepts including semantic search, policy-grounded responses, guardrails, workflow automation, structured data capture, and a Streamlit user interface.
 
-- Ask questions about approved HR policies
-- Retrieve relevant policy information using semantic search
-- Submit annual leave requests
-- Receive safe fallback responses when information is unavailable
+> **Portfolio demonstration:** This project uses fictional Contoso Services HR policies and does not contain real employee information.
 
-## Architecture
+---
 
-Employee
-   |
-   v
-Streamlit Web Application
-   |
-   +-- HR Policy Question
-   |       |
-   |       v
-   |   Sentence Transformer Embeddings
-   |       |
-   |       v
-   |   Cosine Similarity Search
-   |       |
-   |       v
-   |   Approved HR Knowledge Base
-   |
-   +-- Annual Leave Request
-           |
-           v
-       Input Validation
-           |
-           v
-       Leave Request Action
-           |
-           v
-       CSV Data Store
+## 🎯 Business Problem
 
-## Technologies
+HR teams frequently receive repetitive questions about annual leave, sickness absence, hybrid working and company policies.
 
-- Python
-- Streamlit
-- Sentence Transformers
-- Scikit-learn
-- Semantic Search
-- Vector Embeddings
-- CSV persistence
-- Microsoft Copilot Studio prototype
+EmployeeAssist AI demonstrates how an AI-powered employee support solution can provide employees with quick answers while reducing repetitive HR administration.
 
-## AI / Agent Capabilities
+---
 
-### Knowledge Retrieval
-HR policy content is converted into vector embeddings using the
-`all-MiniLM-L6-v2` sentence-transformer model.
+## ✨ Key Features
 
-Employee questions are embedded and compared with policy content using
-cosine similarity.
+### 💬 HR Policy Assistant
 
-### Grounded Responses
-The application returns information retrieved from the approved HR
-knowledge base rather than inventing company policies.
+Employees can ask natural-language questions about company HR policies.
 
-### Guardrail / Fallback
-When sufficiently relevant information cannot be found, the application
-directs the employee to HR rather than generating an unsupported policy.
+Example:
 
-### Business Action
-Employees can submit an annual leave request. The application validates
-the request and persists it with a Pending Manager Approval status.
+> "I've been sick for 8 days. What do I need to do?"
 
-## Example Questions
+The application searches the approved HR policy knowledge base and returns the most relevant information.
 
-- How many days of annual leave do full-time employees receive?
-- I've been sick for 8 days. What do I need to do?
-- Can I work remotely three days per week?
-- Can I bring my dog to the office?
+### 🧠 Semantic Search
 
-## Disclaimer
+The application uses sentence embeddings and similarity matching to identify relevant HR policy content based on the meaning of the employee's question rather than relying only on exact keyword matches.
 
-This project uses fictional Contoso Services HR policies and demonstration
-data. It is intended solely as an AI engineering portfolio project.
+### 🛡️ Guardrails and Fallback Handling
+
+The assistant is designed not to invent unsupported company policies.
+
+For example:
+
+> "Can I bring my dog to the office?"
+
+If the answer cannot be supported by the approved HR knowledge, the assistant directs the employee to HR rather than fabricating a policy.
+
+### 🏖️ Annual Leave Request Workflow
+
+Employees can submit an annual leave request through a structured form containing:
+
+- Employee name
+- Start date
+- End date
+- Optional comments
+
+The request is recorded with a **Pending Manager Approval** status, demonstrating how conversational AI can be combined with business workflows.
+
+---
+
+## 🖼️ Application Screenshots
+
+### HR Policy Question
+
+![HR policy question](screenshots/hr-question.png)
+
+### Annual Leave Request
+
+![Annual leave request](screenshots/leave-request.png)
+
+### Guardrail / Unsupported Policy Question
+
+![Fallback response](screenshots/fallback.png)
+
+---
+
+## 🏗️ Solution Architecture
+
+```text
+                    Employee
+                        │
+                        ▼
+                 Streamlit UI
+                        │
+             ┌──────────┴──────────┐
+             │                     │
+             ▼                     ▼
+      HR Policy Question      Leave Request
+             │                     │
+             ▼                     ▼
+       Semantic Search       Input Validation
+             │                     │
+             ▼                     ▼
+     Sentence Embeddings      Request Logging
+             │                     │
+             ▼                     ▼
+     HR Policy Knowledge     Pending Approval
+             │
+             ▼
+   Relevant Policy Response
+             │
+       ┌─────┴─────┐
+       │           │
+    Supported   Unsupported
+       │           │
+       ▼           ▼
+ Policy Answer   HR Escalation
+```
+
+---
+
+## 🧰 Technology Stack
+
+- **Python**
+- **Streamlit** — interactive web application
+- **Sentence Transformers** — semantic text embeddings
+- **Scikit-learn** — similarity calculation
+- **CSV** — demonstration workflow storage
+- **Git & GitHub** — source control and portfolio hosting
+
+---
+
+## 📁 Project Structure
+
+```text
+employee-assist-ai/
+│
+├── app.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+│
+├── data/
+│   └── hr_policy.txt
+│
+└── screenshots/
+    ├── hr-question.png
+    ├── leave-request.png
+    └── fallback.png
+```
+
+---
+
+## 🚀 Running the Application Locally
+
+Clone the repository:
+
+```bash
+git clone https://github.com/SharminAman/employee-assist-ai.git
+cd employee-assist-ai
+```
+
+Create and activate a virtual environment, then install the dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the Streamlit application:
+
+```bash
+streamlit run app.py
+```
+
+Streamlit will open the EmployeeAssist AI interface in your browser.
+
+---
+
+## 🧪 Example Test Scenarios
+
+| Scenario | Expected Behaviour |
+|---|---|
+| Annual leave entitlement | Returns information from the approved HR policy |
+| Sickness lasting more than 7 days | Provides the relevant fit-note guidance |
+| Unsupported company-policy question | Does not invent an answer and directs the user to HR |
+| Annual leave request | Captures the request and returns a pending approval status |
+
+---
+
+## 🔐 Responsible AI Considerations
+
+The prototype demonstrates several basic responsible-AI principles:
+
+- Answers should be grounded in approved HR information.
+- Unsupported policy questions should not result in fabricated answers.
+- Employees should not be asked for unnecessary sensitive information.
+- Complex HR matters should be escalated to a human HR team.
+- The application is a portfolio prototype and not a production HR decision-making system.
+
+---
+
+## 🔮 Future Improvements
+
+Future development could include:
+
+- Retrieval-Augmented Generation (RAG) with a production vector database
+- LLM-generated responses grounded in retrieved policy content
+- Microsoft Copilot Studio integration
+- Power Automate approval workflows
+- Microsoft Teams integration
+- Authentication and role-based access
+- SharePoint or Dataverse knowledge sources
+- Manager approval notifications
+- Cloud deployment
+- Conversation logging and evaluation
+
+---
+
+## 👤 Author
+
+**Sharmin Aman**
+
+AI Engineer Portfolio Project
+
+---
+
+## ⚠️ Disclaimer
+
+EmployeeAssist AI is a fictional portfolio demonstration. Contoso Services and the HR policies used in this project are fictional. The application should not be used for real employment, HR, legal or medical decisions.
